@@ -38,6 +38,10 @@ public class Main {
         epic1.setTitle("Epic #2 After Update");
         epic1.setDescription("Description After Update");
         //  epic1.setStatus(Status.DONE);
+        subtask1.setStatus(Status.DONE);
+        taskManager.updateSubtask(subtask1);
+        subtask2.setStatus(Status.DONE);
+        taskManager.updateSubtask(subtask2);
         taskManager.updateEpic(epic1);
         System.out.println(taskManager.getEpicSubtask(epic1));
         System.out.println(taskManager.getEpicById(4));

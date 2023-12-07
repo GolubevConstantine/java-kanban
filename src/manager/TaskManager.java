@@ -1,6 +1,7 @@
 package manager;
 
 import task.Epic;
+import task.Status;
 import task.Subtask;
 import task.Task;
 
@@ -10,9 +11,9 @@ import java.util.HashMap;
 public class TaskManager {
 
     private int generatorId = 1;
-    private HashMap<Integer, Task> tasks;
-    private HashMap<Integer, Epic> epics;
-    private HashMap<Integer, Subtask> subtasks;
+    private final HashMap<Integer, Task> tasks;
+    private final HashMap<Integer, Epic> epics;
+    private final HashMap<Integer, Subtask> subtasks;
 
     public TaskManager() {
         this.tasks = new HashMap<>();
@@ -60,10 +61,11 @@ public class TaskManager {
             return;
         }
         subtasks.put(subtask.getId(), subtask);
+
+        updateEpicStatus(epics.get(subtask.getEpicId()));
     }
 
     public void addSubtask(Epic epic, Subtask subtask) {
-
         if (epic.getId() == 0) {
             return;
         }
@@ -140,5 +142,27 @@ public class TaskManager {
             subtasksFromEpic.add(subtasks.get(subtaskId));
         }
         return subtasksFromEpic;
+    }
+
+    private void updateEpicStatus(Epic epic) {
+        ArrayList<Integer> subtaskIds = epic.getSubtaskIds();
+        if (subtaskIds.isEmpty()) {
+            epic.setStatus(Status.NEW);
+            return;
+        }
+        Status status = null;
+        for (Integer subtaskId : subtaskIds) {
+            Subtask subtask = subtasks.get(subtaskId);
+            if (status == null) {
+                status = subtask.getStatus();
+                continue;
+            }
+            if (status.equals(subtask.getStatus())) {
+                continue;
+            }
+            epic.setStatus(Status.IN_PROGRESS);
+            return;
+        }
+        epic.setStatus(status);
     }
 }
