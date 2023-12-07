@@ -12,4 +12,9 @@ public class Epic extends Task {
     public void addSubtaskId(int subtaskId){
         subtaskIds.add(subtaskId);
     }
+
+    @Override
+    public void setStatus(Status status) {
+
+    }
 }

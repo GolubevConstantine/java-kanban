@@ -10,32 +10,61 @@ import java.util.HashMap;
 public class TaskManager {
 
     private int generatorId = 1;
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private HashMap<Integer, Task> tasks;
+    private HashMap<Integer, Epic> epics;
+    private HashMap<Integer, Subtask> subtasks;
 
-    public ArrayList<Task> getTasks(){
+    public TaskManager() {
+        this.tasks = new HashMap<>();
+        this.epics = new HashMap<>();
+        this.subtasks = new HashMap<>();
+    }
+
+    public ArrayList<Task> getTasks() {
 
         return new ArrayList<>(tasks.values());
     }
-    public ArrayList<Epic> getEpics(){
+
+    public ArrayList<Epic> getEpics() {
 
         return new ArrayList<>(epics.values());
     }
-    public ArrayList<Subtask> getSubTasks(){
+
+    public ArrayList<Subtask> getSubTasks() {
 
         return new ArrayList<>(subtasks.values());
     }
+
     public void addTask(Task task) {
         task.setId(generatorId);
         tasks.put(task.getId(), task);
         generatorId++;
     }
 
-    public void addSubtask(Subtask subtask) {
-        int epicId = subtask.getEpicId();
-        Epic epic = epics.get(epicId);
-        if (epic == null) {
+    public void updateTask(Task task) {
+        if (task.getId() == 0) {
+            return;
+        }
+        tasks.put(task.getId(), task);
+    }
+
+    public void updateEpic(Epic epic) {
+        if (epic.getId() == 0) {
+            return;
+        }
+        epics.put(epic.getId(), epic);
+    }
+
+    public void updateSubtask(Subtask subtask) {
+        if (subtask.getId() == 0) {
+            return;
+        }
+        subtasks.put(subtask.getId(), subtask);
+    }
+
+    public void addSubtask(Epic epic, Subtask subtask) {
+
+        if (epic.getId() == 0) {
             return;
         }
         subtask.setId(generatorId);
@@ -50,4 +79,29 @@ public class TaskManager {
         generatorId++;
     }
 
+    public void deleteAllTasks() {
+        tasks.clear();
+    }
+
+    public void deleteAllEpics() {
+        epics.clear();
+        subtasks.clear();
+    }
+
+    public void deleteAllSubtasks() {
+        subtasks.clear();
+        //TODO
+    }
+
+    public Task getTaskById(int id) {
+        return tasks.get(id);
+    }
+
+    public Epic getEpicById(int id) {
+        return epics.get(id);
+    }
+
+    public Subtask getSubtaskById(int id) {
+        return subtasks.get(id);
+    }
 }
