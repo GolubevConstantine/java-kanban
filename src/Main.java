@@ -1,4 +1,6 @@
 import manager.InMemoryTaskManager;
+import manager.Managers;
+import manager.TaskManager;
 import task.Epic;
 import task.Status;
 import task.Subtask;
@@ -8,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
         Task task1 = new Task("Task #1", "Description");
         Epic epic = new Epic("Epic #1", "Description");
         Subtask subtask = new Subtask("New subtask", "Description",2);
@@ -54,6 +56,19 @@ public class Main {
         System.out.println(inMemoryTaskManager.getTaskById(1));
         System.out.println(inMemoryTaskManager.getEpicById(2));
         System.out.println(inMemoryTaskManager.getSubtaskById(3));
+        System.out.println(inMemoryTaskManager.getTaskById(0));
+        System.out.println(inMemoryTaskManager.getTaskById(1));
+        System.out.println(inMemoryTaskManager.getEpicById(2));
+        System.out.println(inMemoryTaskManager.getSubtaskById(3));
+        System.out.println(inMemoryTaskManager.getTaskById(0));
+        System.out.println(inMemoryTaskManager.getTaskById(1));
+        System.out.println(inMemoryTaskManager.getEpicById(2));
+        System.out.println(inMemoryTaskManager.getSubtaskById(3));
+        System.out.println(inMemoryTaskManager.getTaskById(0));
+        System.out.println(inMemoryTaskManager.getTaskById(1));
+        System.out.println(inMemoryTaskManager.getEpicById(2));
+        System.out.println(inMemoryTaskManager.getSubtaskById(3));
+        System.out.println(inMemoryTaskManager.getHistory());
         System.out.println("Удаление всех задач.");
         inMemoryTaskManager.deleteAllTasks();
         System.out.println(inMemoryTaskManager.getTasks());
