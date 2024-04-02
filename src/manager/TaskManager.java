@@ -15,7 +15,7 @@ public interface TaskManager {
 
     ArrayList<Subtask> getSubTasks();
 
-    void addTask(Task task);
+    Integer addTask(Task task);
 
     void updateTask(Task task);
 
