@@ -2,23 +2,16 @@ package test;
 
 import manager.Managers;
 import manager.TaskManager;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task.Status;
 import task.Task;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static task.Status.NEW;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 class TaskTest {
-    @BeforeEach
-    void setup() {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
-    }
 
     @Test
     void addNewTask() {
