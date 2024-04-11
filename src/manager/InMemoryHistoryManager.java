@@ -29,6 +29,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
         remove(task.getId());
         linkLast(task);
+        historyMap.put(task.getId(), last);
     }
 
     void linkLast(Task task) {
@@ -39,7 +40,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             last.next = node;
         }
         last = node;
-        historyMap.put(task.getId(), node);
     }
 
     @Override
