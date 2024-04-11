@@ -37,10 +37,10 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void addTask(Task task) {
+    public Integer addTask(Task task) {
         task.setId(generatorId);
         tasks.put(task.getId(), task);
-        generatorId++;
+        return generatorId++;
     }
 
     @Override
