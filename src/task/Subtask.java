@@ -19,6 +19,11 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
+    public String toString(Subtask subtask) {
+        return subtask.getId() + "," + subtask.getTaskType() + "," + subtask.getTitle() + "," + subtask.getStatus() +
+                "," + subtask.getDescription() + "," + subtask.getEpicId();
+    }
+
     public Integer getEpicId() {
         return epicId;
     }

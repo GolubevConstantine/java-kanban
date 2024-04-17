@@ -58,6 +58,15 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public Integer getEpicId() {
+        return null;
+    }
+
+    public String toString(Task task) {
+        return task.getId() + "," + task.getTaskType() + "," + task.getTitle() + "," + task.getStatus() + "," +
+                task.getDescription();
+    }
+
     @Override
     public String toString() {
         return "Task{" +

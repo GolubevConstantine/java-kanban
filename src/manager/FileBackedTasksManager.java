@@ -51,7 +51,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private final File file;
-    private static final String fileLine = "id,type,name,status,description,epic";
+    private static final String FILE_HEADER = "id,type,name,status,description,epic";
 
     public FileBackedTasksManager(File file) {
         this.file = file;
@@ -180,7 +180,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                         break;
                     case SUBTASK:
                         fileManager.subtasks.put(task.getId(), (Subtask) task);
-                        int epicId = ((Subtask) task).getEpicId();
+                        int epicId = task.getEpicId();
                         List<Integer> subtaskIds = fileManager.epics.get(epicId).getSubtaskIds();
                         subtaskIds.add(task.getId());
                         break;
@@ -193,7 +193,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 fileManager.historyManager.add(fileHistory.get(id));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ManagerSaveException("Can't read from file: " + file.getName(), e);
         }
         return fileManager;
     }
@@ -225,7 +225,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            writer.write(fileLine);
+            writer.write(FILE_HEADER);
             writer.newLine();
             addTasksToFile(writer);
             writer.newLine();
@@ -241,31 +241,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private void addTasksToFile(BufferedWriter writer) throws IOException {
         for (Task task : getTasks()) {
-            writer.write(toString(task));
+            writer.write(task.toString(task));
             writer.newLine();
         }
         for (Epic epic : getEpics()) {
-            writer.write(toString(epic));
+            writer.write(epic.toString(epic));
             writer.newLine();
         }
         for (Subtask subtask : getSubTasks()) {
-            writer.write(toString(subtask));
+            writer.write(subtask.toString(subtask));
             writer.newLine();
         }
-    }
-
-    private String toString(Task task) {
-        return task.getId() + "," + task.getTaskType() + "," + task.getTitle() + "," + task.getStatus() + "," +
-                task.getDescription();
-    }
-
-    private String toString(Subtask subtask) {
-        return subtask.getId() + "," + subtask.getTaskType() + "," + subtask.getTitle() + "," + subtask.getStatus() +
-                "," + subtask.getDescription() + "," + subtask.getEpicId();
-    }
-
-    public File getFile() {
-        return file;
     }
 }
 
