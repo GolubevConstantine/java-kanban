@@ -9,6 +9,13 @@ public class Task {
     private String description;
     private Status status;
 
+    public Task(int id, String title, String description, Status status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+    }
+
     public Task(String title, String description) {
         this.title = title;
         this.description = description;
@@ -21,6 +28,14 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setTitle(String title) {
@@ -37,6 +52,19 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public TaskType getTaskType() {
+        return TaskType.TASK;
+    }
+
+    public Integer getEpicId() {
+        return null;
+    }
+
+    public String toString(Task task) {
+        return task.getId() + "," + task.getTaskType() + "," + task.getTitle() + "," + task.getStatus() + "," +
+                task.getDescription();
     }
 
     @Override
