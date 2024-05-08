@@ -15,7 +15,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
 
     @BeforeEach
     void setUp() {
-        file = new File("./resources/kanban.csv");
+        file = new File("./resources/forTest.csv");
         super.taskManager = new FileBackedTasksManager(file);
         initTasks();
         taskManager.getTaskById(1);
@@ -27,7 +27,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTasksMa
     @Test
     void loadFromFile() {
         FileBackedTasksManager fileManager = FileBackedTasksManager.loadFromFile(
-                new File("./resources/kanban.csv"));
+                new File("./resources/forTest.csv"));
         assertEquals(1, fileManager.getTasks().size(), "Количество задач после выгрузки не совпададает");
         assertEquals(taskManager.getTasks().size(), fileManager.getTasks().size(),
                 "Список задач после выгрузки не совпададает");

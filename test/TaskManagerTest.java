@@ -1,6 +1,7 @@
 
 import exceptions.CollisionTaskException;
 import manager.*;
+import org.junit.jupiter.api.Order;
 import task.*;
 import org.junit.jupiter.api.Test;
 
@@ -15,14 +16,15 @@ abstract class TaskManagerTest<T extends TaskManager> {
     protected T taskManager;
     protected final LocalDateTime DATE = LocalDateTime.of(2024, 5, 1, 0, 0);
     protected final int EPIC_ID = 2;
-    protected Duration DURATION =  Duration.ofMinutes(100);
+    protected Duration DURATION = Duration.ofMinutes(100);
     protected Task task1;
     protected Epic epic2;
     protected Subtask subtask3;
     protected Subtask subtask4;
 
-    protected void initTasks() {
-        task1 = new Task("Задача", "description1", DATE, DURATION);
+
+    public void initTasks() {
+        task1 = new Task("Задача", "description1", DATE.plusMinutes(10), DURATION);
         taskManager.addTask(task1);
         epic2 = new Epic("Эпик", "description3");
         taskManager.addEpic(epic2);
@@ -102,7 +104,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.updateSubtask(update2Subtask3);
         taskManager.updateSubtask(update3Subtask4);
         assertEquals(Status.IN_PROGRESS, expectedEpicOfSubtask.getStatus(), "Статус не IN_PROGRESS");
-        assertEquals( Duration.ofMinutes(200).toMinutes(), expectedEpicOfSubtask.getDuration().toMinutes(), "Продолжительность эпика не обновилась");
+        assertEquals(Duration.ofMinutes(200).toMinutes(), expectedEpicOfSubtask.getDuration().toMinutes(), "Продолжительность эпика не обновилась");
     }
 
     @Test
@@ -163,9 +165,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
+    @Order(1)
     void validate() {
-        Task task1 = new Task("Задача1", "description1", DATE, Duration.ofDays(100));
-        Task task2 = new Task("Задача2", "description2", DATE, Duration.ofDays(100));
+        Task task1 = new Task("Задача1", "description1", DATE, DURATION);
+        Task task2 = new Task("Задача2", "description2", DATE, DURATION);
 
         CollisionTaskException exception = assertThrows(CollisionTaskException.class,
                 () -> {

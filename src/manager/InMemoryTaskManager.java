@@ -262,9 +262,9 @@ public class InMemoryTaskManager implements TaskManager {
                 continue;
             }
             if ((!newTask.getEndTime().isAfter(existTask.getStartTime())) || (!newTask.getStartTime().isBefore(existTask.getEndTime()))) {
-                continue;
+                return;
             }
-            throw new CollisionTaskException("Время выполнения задачи пересекается со временем уже существующей " + existTask + "задачи. Выберите другую дату.");
+            throw new CollisionTaskException("Время выполнения задачи пересекается со временем уже существующей задачи. Выберите другую дату.");
         }
     }
 }
