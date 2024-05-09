@@ -47,7 +47,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Integer addTask(Task task) {
-        int taskId = generatorId++;
+        int taskId = ++generatorId;
         validate(task);
         task.setId(taskId);
         tasks.put(task.getId(), task);
@@ -60,7 +60,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.get(subtask.getEpicId()) == null) {
             return;
         }
-        int taskId = generatorId++;
+        int taskId = ++generatorId;
         subtask.setId(taskId);
         validate(subtask);
         subtasks.put(subtask.getId(), subtask);
@@ -71,7 +71,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addEpic(Epic epic) {
-        int taskId = generatorId++;
+        int taskId = ++generatorId;
         epic.setId(taskId);
         epics.put(epic.getId(), epic);
         setEpicDateTime(epic.getId());

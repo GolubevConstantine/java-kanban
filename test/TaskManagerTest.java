@@ -1,7 +1,6 @@
 
 import exceptions.CollisionTaskException;
 import manager.*;
-import org.junit.jupiter.api.Order;
 import task.*;
 import org.junit.jupiter.api.Test;
 
@@ -165,7 +164,6 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    @Order(1)
     void validate() {
         Task task1 = new Task("Задача1", "description1", DATE, DURATION);
         Task task2 = new Task("Задача2", "description2", DATE, DURATION);
