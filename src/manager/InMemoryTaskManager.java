@@ -16,9 +16,9 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Task> tasks = new HashMap<>();
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     public final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    HistoryManager historyManager;
+    protected final HistoryManager historyManager;
 
-    static final Comparator<Task> COMPARATOR = Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Task::getId);
+    protected static final Comparator<Task> COMPARATOR = Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder())).thenComparing(Task::getId);
 
     protected Set<Task> prioritizedTasks = new TreeSet<>(COMPARATOR);
 
@@ -47,12 +47,12 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Integer addTask(Task task) {
-        generatorId++;
+        int taskId = generatorId++;
         validate(task);
-        task.setId(generatorId);
+        task.setId(taskId);
         tasks.put(task.getId(), task);
         prioritizedTasks.add(task);
-        return generatorId;
+        return taskId;
     }
 
     @Override
@@ -60,8 +60,8 @@ public class InMemoryTaskManager implements TaskManager {
         if (epics.get(subtask.getEpicId()) == null) {
             return;
         }
-        generatorId++;
-        subtask.setId(generatorId);
+        int taskId = generatorId++;
+        subtask.setId(taskId);
         validate(subtask);
         subtasks.put(subtask.getId(), subtask);
         epics.get(subtask.getEpicId()).addSubtaskId(subtask.getId());
@@ -71,8 +71,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addEpic(Epic epic) {
-        generatorId++;
-        epic.setId(generatorId);
+        int taskId = generatorId++;
+        epic.setId(taskId);
         epics.put(epic.getId(), epic);
         setEpicDateTime(epic.getId());
     }
