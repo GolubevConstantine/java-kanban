@@ -1,10 +1,5 @@
-id,type,name,status,description,epic
-1,TASK,Task #1,NEW,Description
-2,TASK,Task #2,NEW,Description
-3,TASK,Task #3,NEW,Description
-4,TASK,Epic #1,NEW,Description
-5,TASK,Epic #2,NEW,Description
-6,TASK,New subtask #1,NEW,Description,4
-7,TASK,New subtask #2,NEW,Description,4
+id,type,name,status,description,startTime,endTime,duration,epic
+1,TASK,Задача,NEW,description1,null,null,1000
+2,EPIC,Эпик,NEW,description2,02.01.23 00:00,02.01.23 16:40,1000
+3,SUBTASK,Подзадача,NEW,description3,02.01.23 00:00,02.01.23 16:40,1000,2
 
-1,5,7,6

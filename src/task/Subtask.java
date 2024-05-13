@@ -1,11 +1,20 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 public class Subtask extends Task {
 
     private final int epicId;
 
-    public Subtask(int id, String title, String description, Status status, int epicId) {
-        super(id, title, description, status);
+    public Subtask(String title, String description, int epicId, LocalDateTime startTime, Duration duration) {
+        super(title, description, startTime, duration);
+        this.epicId = epicId;
+    }
+
+    public Subtask(int id, String title, String description, Status status, int epicId, LocalDateTime startTime, Duration duration) {
+        super(id, title, description, status, startTime, duration);
         this.epicId = epicId;
     }
 
@@ -18,9 +27,22 @@ public class Subtask extends Task {
         return TaskType.SUBTASK;
     }
 
-    public String toString(Subtask subtask) {
-        return subtask.getId() + "," + subtask.getTaskType() + "," + subtask.getTitle() + "," + subtask.getStatus() +
-                "," + subtask.getDescription() + "," + subtask.getEpicId();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Subtask subtask = (Subtask) o;
+        return Objects.equals(title, subtask.title) && Objects.equals(description, subtask.description) && (id == subtask.id) && Objects.equals(status, subtask.status) && (epicId == subtask.epicId) && Objects.equals(startTime, subtask.startTime) && (duration == subtask.duration);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, id, status, startTime, duration, epicId);
+    }
+
+    @Override
+    public String toString() {
+        return "Подзадача{" + "название='" + title + '\'' + ", описание='" + description + '\'' + ", id='" + id + '\'' + ", статус='" + status + '\'' + ", дата начала='" + getStartTimeString() + '\'' + ", продолжительность='" + duration + '\'' + ", id эпика='" + epicId + '}' + '\'';
     }
 
     public Integer getEpicId() {
