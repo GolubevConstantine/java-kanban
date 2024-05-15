@@ -85,8 +85,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllSubtasks() {
         for (Epic value : epics.values()) {
+            setEpicDateTime(value.getId());
             value.getSubtaskIds().clear();
-            setEpicDateTime(value.getEpicId());
         }
         subtasks.clear();
     }
@@ -258,7 +258,7 @@ public class InMemoryTaskManager implements TaskManager {
             if (newTask.getStartTime() == null || existTask.getStartTime() == null) {
                 return;
             }
-            if (newTask.getId() == existTask.getId()) {
+            if (Objects.equals(newTask.getId(), existTask.getId())) {
                 continue;
             }
             if ((!newTask.getEndTime().isAfter(existTask.getStartTime())) || (!newTask.getStartTime().isBefore(existTask.getEndTime()))) {

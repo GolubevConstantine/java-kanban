@@ -1,4 +1,5 @@
 
+import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SubtaskTest {
-    private final TaskManager inMemoryTaskManager = Managers.getDefault();
+    private final TaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
     @Test
     void addNewSubtaskWithOutEpic() {
