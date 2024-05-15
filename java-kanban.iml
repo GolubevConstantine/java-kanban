@@ -28,5 +28,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="google.code.gson" level="project" />
+    <orderEntry type="library" name="checkstyle-10.13.0-all" level="application" />
   </component>
 </module>
