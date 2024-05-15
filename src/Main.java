@@ -26,7 +26,7 @@ public class Main {
 
         HttpTaskServer server = new HttpTaskServer(taskManager);
         server.start();
-         Duration DURATION = Duration.ofMinutes(100);
+        Duration duration = Duration.ofMinutes(100);
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
@@ -34,12 +34,12 @@ public class Main {
                 .create();
 
         Task task1 = new Task("Задача", "description1",
-                LocalDateTime.of(2023, 1, 1, 0, 0), DURATION);
+                LocalDateTime.of(2023, 1, 1, 0, 0), duration);
         Epic epic2 = new Epic("Эпик", "description2");
         Subtask subtask3 = new Subtask("Подзадача", "description3", 2,
-                LocalDateTime.of(2023, 1, 2, 0, 0), DURATION);
+                LocalDateTime.of(2023, 1, 2, 0, 0), duration);
         Subtask subtask4 = new Subtask("Подзадача", "description4", 2,
-                LocalDateTime.of(2023, 1, 3, 0, 0), DURATION);
+                LocalDateTime.of(2023, 1, 3, 0, 0), duration);
 
         taskManager.addTask(task1);
         taskManager.addEpic(epic2);
@@ -57,13 +57,13 @@ public class Main {
         String json = gson.toJson(task);
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        client.send(request, HttpResponse.BodyHandlers.ofString());
 
         System.out.println(body);
         System.out.println(json);
 
-     //   kvServer.stop();
-     //   server.stop();
+        taskHttpServer.stop();
+        server.stop();
 
     }
 }
