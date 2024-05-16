@@ -3,6 +3,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import http.HttpTaskManager;
 import http.HttpTaskServer;
+import manager.Managers;
 import task.*;
 
 import http.TaskHttpServer;
@@ -28,10 +29,7 @@ public class Main {
         server.start();
         Duration duration = Duration.ofMinutes(100);
 
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .create();
+        final  Gson gson = Managers.getGson();
 
         Task task1 = new Task("Задача", "description1",
                 LocalDateTime.of(2023, 1, 1, 0, 0), duration);

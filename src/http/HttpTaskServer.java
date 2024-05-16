@@ -6,6 +6,7 @@ import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import manager.Managers;
 import task.*;
 import manager.TaskManager;
 
@@ -24,10 +25,7 @@ public class HttpTaskServer {
 
     private final HttpServer httpServer;
     private final TaskManager taskManager;
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
-            .registerTypeAdapter(Duration.class, new DurationAdapter())
-            .create();
+    private final  Gson gson = Managers.getGson();
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
         this.taskManager = taskManager;

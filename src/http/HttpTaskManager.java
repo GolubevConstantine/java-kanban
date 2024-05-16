@@ -1,6 +1,7 @@
 package http;
 
 import com.google.gson.*;
+import manager.Managers;
 import task.*;
 import manager.FileBackedTasksManager;
 
@@ -17,10 +18,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
     private final HttpTaskClient client = new HttpTaskClient();
 
-    private final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
-            .registerTypeAdapter(Duration.class, new DurationAdapter())
-            .create();
+    private final  Gson gson = Managers.getGson();
 
     public HttpTaskManager(boolean toLoad) {
         if (toLoad) {
