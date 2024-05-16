@@ -1,4 +1,5 @@
 
+import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ class TaskTest {
 
     @Test
     void addNewTask() {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
+        TaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("Test addNewTask", "Test addNewTask description");
 
         int taskId = inMemoryTaskManager.addTask(task);

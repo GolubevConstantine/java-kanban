@@ -14,11 +14,14 @@ import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    private final File file;
+    protected final File file = new File("./resources/kanban.csv");
     private static final String FILE_HEADER = "id,type,name,status,description,epic,startTime,endTime,duration";
 
+
     public FileBackedTasksManager(File file) {
-        this.file = file;
+    }
+
+    public FileBackedTasksManager() {
     }
 
     public static FileBackedTasksManager loadFromFile(File file) {
@@ -207,7 +210,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         };
     }
 
-    private void save() {
+    protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write(FILE_HEADER);
             writer.newLine();
@@ -255,5 +258,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 "," + subtask.getDescription() + "," + subtask.getStartTimeString() + "," + subtask.getEndTimeString() +
                 "," + subtask.getDuration() + "," + subtask.getEpicId();
     }
+
 }
 

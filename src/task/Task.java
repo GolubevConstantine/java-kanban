@@ -47,7 +47,7 @@ public class Task {
         this.status = Status.NEW;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

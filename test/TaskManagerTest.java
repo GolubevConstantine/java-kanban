@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-abstract class TaskManagerTest<T extends TaskManager> {
+public abstract class TaskManagerTest<T extends TaskManager> {
     protected T taskManager;
     protected final LocalDateTime DATE = LocalDateTime.of(2024, 5, 1, 0, 0);
     protected final int EPIC_ID = 2;

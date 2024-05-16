@@ -1,5 +1,7 @@
 
+import http.HttpTaskManager;
 import manager.HistoryManager;
+import manager.InMemoryTaskManager;
 import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class HistoryManagerTest {
     @Test
     void add() {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
+        TaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("Test addNewTask", "Test addNewTask description");
         int taskId = inMemoryTaskManager.addTask(task);
         HistoryManager historyManager = Managers.getDefaultHistory();
