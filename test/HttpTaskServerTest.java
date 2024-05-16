@@ -73,7 +73,7 @@ class HttpTaskServerTest {
         }.getType();
         List<Task> tasksList = gson.fromJson(response.body(), taskType);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(tasksList, "Список задач не получен");
         assertEquals(taskManager.getTasks().toString(), tasksList.toString(), "Получен неверный список задач");
     }
@@ -88,7 +88,7 @@ class HttpTaskServerTest {
         }.getType();
         List<Epic> epicsList = gson.fromJson(response.body(), epicType);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(epicsList, "Список эпиков не получен");
         assertEquals(taskManager.getEpics().toString(), epicsList.toString(), "Получен неверный список эпиков");
     }
@@ -103,7 +103,7 @@ class HttpTaskServerTest {
         }.getType();
         List<Subtask> subtasksList = gson.fromJson(response.body(), subtaskType);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(subtasksList, "Список подзадач не получен");
         assertEquals(taskManager.getSubTasks().toString(), subtasksList.toString(), "Получен неверный список подзадач");
     }
@@ -116,7 +116,7 @@ class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Task taskDeserialized = gson.fromJson(response.body(), Task.class);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(taskDeserialized, "Задача не получена");
         assertEquals(taskManager.getTasks().get(0).toString(), taskDeserialized.toString(), "Получена неверная задача");
     }
@@ -128,7 +128,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(400, response.statusCode(), "Код ответа не 400");
+        assertEquals(HttpStatus.SC_BAD_REQUEST, response.statusCode(), "Код ответа не 400");
         assertEquals("Некорректный id", response.body(), "Ответ сервера не совпадает");
     }
 
@@ -139,7 +139,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).GET().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(404, response.statusCode(), "Код ответа не 404");
+        assertEquals(HttpStatus.SC_NOT_FOUND, response.statusCode(), "Код ответа не 404");
         assertEquals("Задача с id 3 не найдена", response.body(), "Ответ сервера не совпадает");
     }
 
@@ -151,7 +151,7 @@ class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Epic epicDeserialized = gson.fromJson(response.body(), Epic.class);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(epicDeserialized, "Эпик не получен");
         assertEquals(taskManager.getEpics().get(0).toString(), epicDeserialized.toString(), "Получен неверный эпик");
     }
@@ -164,7 +164,7 @@ class HttpTaskServerTest {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         Subtask subtaskDeserialized = gson.fromJson(response.body(), Subtask.class);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(subtaskDeserialized, "Подзадача не получена");
         assertEquals(taskManager.getSubTasks().get(0).toString(), subtaskDeserialized.toString(), "Получена неверная подзадача");
     }
@@ -179,7 +179,7 @@ class HttpTaskServerTest {
         }.getType();
         List<Subtask> subtasksList = gson.fromJson(response.body(), subtaskType);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(subtasksList, "Список подзадач не получен");
         assertEquals(taskManager.getEpicSubtask(taskManager.getEpicById(2)).toString(), subtasksList.toString(), "Получен неверный список подзадач");
     }
@@ -194,7 +194,7 @@ class HttpTaskServerTest {
         }.getType();
         List<Task> history = gson.fromJson(response.body(), taskType);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(history, "Список истории не получен");
         assertEquals(3, history.size(), "Длина списка истории не 3");
         assertEquals(taskManager.getHistory().get(0).getId(), history.get(0).getId(),
@@ -215,7 +215,7 @@ class HttpTaskServerTest {
         }.getType();
         List<Task> priority = gson.fromJson(response.body(), taskType);
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertNotNull(priority, "Список приоритетных задач не получен");
         assertEquals(3, priority.size(), "Длина списка приоритетных задач не 3");
         assertEquals(taskManager.getPrioritizedTasks().get(0).getId(), priority.get(0).getId(),
@@ -233,7 +233,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertTrue(taskManager.getTasks().isEmpty(), "Задача не удалена");
         assertNull(taskManager.getTaskById(1), "Задача не удалена");
     }
@@ -245,7 +245,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertTrue(taskManager.getEpics().isEmpty(), "Эпик не удален");
         assertNull(taskManager.getEpicById(2), "Эпик не удален");
     }
@@ -257,7 +257,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertEquals(1, taskManager.getSubTasks().size(), "Подзадача не удалена");
         assertNull(taskManager.getSubtaskById(3), "Подзадача не удалена");
     }
@@ -269,7 +269,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertTrue(taskManager.getTasks().isEmpty(), "Задачи не удалены");
         assertEquals("Все задачи удалены", response.body(), "Неверный ответ от сервера");
     }
@@ -281,7 +281,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertTrue(taskManager.getEpics().isEmpty(), "Эпики не удалены");
         assertEquals("Все эпики удалены", response.body(), "Неверный ответ от сервера");
     }
@@ -293,7 +293,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).DELETE().build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(200, response.statusCode(), "Код ответа не 200");
+        assertEquals(HttpStatus.SC_OK, response.statusCode(), "Код ответа не 200");
         assertTrue(taskManager.getSubTasks().isEmpty(), "Подзадачи не удалены");
         assertEquals("Все подзадачи удалены", response.body(), "Неверный ответ от сервера");
     }
@@ -309,7 +309,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode(), "Код ответа не 201");
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode(), "Код ответа не 201");
         assertEquals(5, taskManager.getTasks().get(1).getId(), "Id новой задачи не совпадает");
         assertEquals(2, taskManager.getTasks().size(), "Новая задача не добавлена");
         assertEquals("Задача добавлена", response.body(), "Новая задача не добавлена");
@@ -323,7 +323,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(400, response.statusCode(), "Код ответа не 400");
+        assertEquals(HttpStatus.SC_BAD_REQUEST, response.statusCode(), "Код ответа не 400");
         assertEquals("Необходимо заполнить все поля задачи", response.body(), "Ответ сервера не совпадает");
     }
 
@@ -339,7 +339,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode(), "Код ответа не 201");
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode(), "Код ответа не 201");
         assertEquals(1, taskManager.getTasks().get(0).getId(), "Id задачи не совпадает");
         assertEquals(1, taskManager.getTasks().size(), "Список состоит не из одной задачи");
         assertEquals("Задача обновлена", response.body(), "Задача не обновлена");
@@ -356,7 +356,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode(), "Код ответа не 201");
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode(), "Код ответа не 201");
         assertEquals(5, taskManager.getEpics().get(1).getId(), "Id нового эпика не совпадает");
         assertEquals(2, taskManager.getEpics().size(), "Новый эпик не добавлен");
         assertEquals("Эпик добавлен", response.body(), "Новый эпик не добавлен");
@@ -374,7 +374,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode(), "Код ответа не 201");
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode(), "Код ответа не 201");
         assertEquals(2, taskManager.getEpics().get(0).getId(), "Id эпика не совпадает");
         assertEquals(1, taskManager.getEpics().size(), "Список состоит не из одного эпика");
         assertEquals("Эпик обновлен", response.body(), "Эпик не обновлен");
@@ -392,7 +392,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode(), "Код ответа не 201");
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode(), "Код ответа не 201");
         assertEquals(5, taskManager.getSubTasks().get(2).getId(), "Id новой подзадачи не совпадает");
         assertEquals(3, taskManager.getSubTasks().size(), "Новая подзадача не добавлена");
         assertEquals("Подзадача добавлена", response.body(), "Новая подзадача не добавлена");
@@ -409,7 +409,7 @@ class HttpTaskServerTest {
         HttpRequest request = HttpRequest.newBuilder().uri(url).POST(body).build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        assertEquals(201, response.statusCode(), "Код ответа не 201");
+        assertEquals(HttpStatus.SC_CREATED, response.statusCode(), "Код ответа не 201");
         assertEquals(3, taskManager.getSubTasks().get(0).getId(), "Id подзадачи не совпадает");
         assertEquals(2, taskManager.getSubTasks().size(), "Список состоит не из двух подзадач");
         assertEquals("Подзадача обновлена", response.body(), "Подзадача не обновлена");

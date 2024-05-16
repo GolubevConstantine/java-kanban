@@ -1,7 +1,6 @@
 package http;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -15,8 +14,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class HttpTaskServer {
@@ -58,186 +55,186 @@ public class HttpTaskServer {
                     InputStream inputStreamTask = exchange.getRequestBody();
                     String bodyTask = new String(inputStreamTask.readAllBytes(), StandardCharsets.UTF_8);
                     if (bodyTask.isEmpty()) {
-                        writeResponse(exchange, "Необходимо заполнить все поля задачи", 400);
+                        writeResponse(exchange, "Необходимо заполнить все поля задачи", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     try {
                         Task task = gson.fromJson(bodyTask, Task.class);
                         if (task.getId() == 0) {
                             taskManager.addTask(task);
-                            writeResponse(exchange, "Задача добавлена", 201);
+                            writeResponse(exchange, "Задача добавлена", HttpStatus.SC_CREATED);
                         } else {
                             taskManager.updateTask(task);
-                            writeResponse(exchange, "Задача обновлена", 201);
+                            writeResponse(exchange, "Задача обновлена", HttpStatus.SC_CREATED);
                         }
                     } catch (JsonSyntaxException e) {
-                        writeResponse(exchange, "Получен некорректный JSON", 400);
+                        writeResponse(exchange, "Получен некорректный JSON", HttpStatus.SC_BAD_REQUEST);
                     }
                     break;
                 case POST_EPIC:
                     InputStream inputStreamEpic = exchange.getRequestBody();
                     String bodyEpic = new String(inputStreamEpic.readAllBytes(), StandardCharsets.UTF_8);
                     if (bodyEpic.isEmpty()) {
-                        writeResponse(exchange, "Необходимо заполнить все поля задачи", 400);
+                        writeResponse(exchange, "Необходимо заполнить все поля задачи", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     try {
                         Epic epic = gson.fromJson(bodyEpic, Epic.class);
                         if (epic.getId() == 0) {
                             taskManager.addEpic(epic);
-                            writeResponse(exchange, "Эпик добавлен", 201);
+                            writeResponse(exchange, "Эпик добавлен", HttpStatus.SC_CREATED);
                         } else {
                             taskManager.updateEpic(epic);
-                            writeResponse(exchange, "Эпик обновлен", 201);
+                            writeResponse(exchange, "Эпик обновлен", HttpStatus.SC_CREATED);
                         }
                     } catch (JsonSyntaxException e) {
-                        writeResponse(exchange, "Получен некорректный JSON", 400);
+                        writeResponse(exchange, "Получен некорректный JSON", HttpStatus.SC_BAD_REQUEST);
                     }
                     break;
                 case POST_SUBTASK:
                     InputStream inputStreamSubtask = exchange.getRequestBody();
                     String bodySubtask = new String(inputStreamSubtask.readAllBytes(), StandardCharsets.UTF_8);
                     if (bodySubtask.isEmpty()) {
-                        writeResponse(exchange, "Необходимо заполнить все поля задачи", 400);
+                        writeResponse(exchange, "Необходимо заполнить все поля задачи", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     try {
                         Subtask subtask = gson.fromJson(bodySubtask, Subtask.class);
                         if (subtask.getId() == 0) {
                             taskManager.addSubtask(subtask);
-                            writeResponse(exchange, "Подзадача добавлена", 201);
+                            writeResponse(exchange, "Подзадача добавлена", HttpStatus.SC_CREATED);
                         } else {
                             taskManager.updateSubtask(subtask);
-                            writeResponse(exchange, "Подзадача обновлена", 201);
+                            writeResponse(exchange, "Подзадача обновлена", HttpStatus.SC_CREATED);
                         }
                     } catch (JsonSyntaxException e) {
-                        writeResponse(exchange, "Получен некорректный JSON", 400);
+                        writeResponse(exchange, "Получен некорректный JSON", HttpStatus.SC_BAD_REQUEST);
                     }
                 case GET_TASK:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     Task task = taskManager.getTaskById(id);
                     if (task != null) {
-                        writeResponse(exchange, gson.toJson(task), 200);
+                        writeResponse(exchange, gson.toJson(task), HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Задача с id " + id + " не найдена", 404);
+                        writeResponse(exchange, "Задача с id " + id + " не найдена", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case GET_EPIC:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     Epic epic = taskManager.getEpicById(id);
                     if (epic.getId() != 0) {
-                        writeResponse(exchange, gson.toJson(epic), 200);
+                        writeResponse(exchange, gson.toJson(epic), HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Эпик с id " + id + " не найден", 404);
+                        writeResponse(exchange, "Эпик с id " + id + " не найден", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case GET_SUBTASK:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     Subtask subtask = taskManager.getSubtaskById(id);
                     if (subtask.getId() != 0) {
-                        writeResponse(exchange, gson.toJson(subtask), 200);
+                        writeResponse(exchange, gson.toJson(subtask), HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Подзадача с id " + id + " не найдена", 404);
+                        writeResponse(exchange, "Подзадача с id " + id + " не найдена", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case GET_SUBTASKS_EPIC:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     if (taskManager.getEpicById(id).getId() != 0) {
-                        writeResponse(exchange, gson.toJson(taskManager.getEpicSubtask(taskManager.getEpicById(id))), 200);
+                        writeResponse(exchange, gson.toJson(taskManager.getEpicSubtask(taskManager.getEpicById(id))), HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Эпик с id " + id + " не найден", 404);
+                        writeResponse(exchange, "Эпик с id " + id + " не найден", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case DELETE_TASK:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     if (taskManager.getTaskById(id).getId() != 0) {
                         taskManager.deleteTaskById(id);
-                        writeResponse(exchange, "Задача удалена", 200);
+                        writeResponse(exchange, "Задача удалена", HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Задача с id " + id + " не найдена", 404);
+                        writeResponse(exchange, "Задача с id " + id + " не найдена", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case DELETE_EPIC:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     if (taskManager.getEpicById(id) != null) {
                         taskManager.deleteEpicById(id);
-                        writeResponse(exchange, "Эпик удален", 200);
+                        writeResponse(exchange, "Эпик удален", HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Эпик с id " + id + " не найден", 404);
+                        writeResponse(exchange, "Эпик с id " + id + " не найден", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case DELETE_SUBTASK:
                     id = getId(query);
                     if (id == -1) {
-                        writeResponse(exchange, "Некорректный id", 400);
+                        writeResponse(exchange, "Некорректный id", HttpStatus.SC_BAD_REQUEST);
                         return;
                     }
                     if (taskManager.getSubtaskById(id).getId() != 0) {
                         taskManager.deleteSubtaskById(id);
-                        writeResponse(exchange, "Подзадача удалена", 200);
+                        writeResponse(exchange, "Подзадача удалена", HttpStatus.SC_OK);
                     } else {
-                        writeResponse(exchange, "Подзадача с id " + id + " не найдена", 404);
+                        writeResponse(exchange, "Подзадача с id " + id + " не найдена", HttpStatus.SC_NOT_FOUND);
                     }
                     break;
                 case DELETE_TASKS:
                     taskManager.deleteAllTasks();
                     if (taskManager.getTasks().isEmpty()) {
-                        writeResponse(exchange, "Все задачи удалены", 200);
+                        writeResponse(exchange, "Все задачи удалены", HttpStatus.SC_OK);
                     }
                     break;
                 case DELETE_EPICS:
                     taskManager.deleteAllEpics();
                     if (taskManager.getEpics().isEmpty()) {
-                        writeResponse(exchange, "Все эпики удалены", 200);
+                        writeResponse(exchange, "Все эпики удалены", HttpStatus.SC_OK);
                     }
                     break;
                 case DELETE_SUBTASKS:
                     taskManager.deleteAllSubtasks();
                     if (taskManager.getSubTasks().isEmpty()) {
-                        writeResponse(exchange, "Все подзадачи удалены", 200);
+                        writeResponse(exchange, "Все подзадачи удалены", HttpStatus.SC_OK);
                     }
                     break;
                 case GET_TASKS:
-                    writeResponse(exchange, gson.toJson(taskManager.getTasks()), 200);
+                    writeResponse(exchange, gson.toJson(taskManager.getTasks()), HttpStatus.SC_OK);
                     break;
                 case GET_EPICS:
-                    writeResponse(exchange, gson.toJson(taskManager.getEpics()), 200);
+                    writeResponse(exchange, gson.toJson(taskManager.getEpics()), HttpStatus.SC_OK);
                     break;
                 case GET_SUBTASKS:
-                    writeResponse(exchange, gson.toJson(taskManager.getSubTasks()), 200);
+                    writeResponse(exchange, gson.toJson(taskManager.getSubTasks()), HttpStatus.SC_OK);
                     break;
                 case GET_HISTORY:
-                    writeResponse(exchange, gson.toJson(taskManager.getHistory()), 200);
+                    writeResponse(exchange, gson.toJson(taskManager.getHistory()), HttpStatus.SC_OK);
                     break;
                 case GET_PRIORITY:
-                    writeResponse(exchange, gson.toJson(taskManager.getPrioritizedTasks()), 200);
+                    writeResponse(exchange, gson.toJson(taskManager.getPrioritizedTasks()), HttpStatus.SC_OK);
                     break;
                 default:
-                    writeResponse(exchange, "Такого эндпоинта не существует", 404);
+                    writeResponse(exchange, "Такого эндпоинта не существует", HttpStatus.SC_NOT_FOUND);
                     break;
             }
         }

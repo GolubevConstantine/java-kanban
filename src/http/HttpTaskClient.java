@@ -24,7 +24,7 @@ public class HttpTaskClient {
                 .build();
         try {
             HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
-            if (response.statusCode() != 200) {
+            if (response.statusCode() != HttpStatus.SC_OK) {
                 throw new RequestException("Ошибка получения запроса. Код ошибки: " + response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
@@ -41,7 +41,7 @@ public class HttpTaskClient {
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 200) {
+            if (response.statusCode() != HttpStatus.SC_OK) {
                 throw new RequestException("Ошибка получения запроса. Код ошибки: " + response.statusCode());
             }
             return response.body();

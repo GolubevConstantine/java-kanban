@@ -29,16 +29,16 @@ public class TaskHttpServer {
                 String key = h.getRequestURI().getPath().substring("/load/".length());
                 if (key.isEmpty()) {
                     System.out.println("Key для загрузки пустой. key указывается в пути: /load/{key}");
-                    h.sendResponseHeaders(400, 0);
+                    h.sendResponseHeaders(HttpStatus.SC_BAD_REQUEST, 0);
                     return;
                 }
                 String response = data.get(key);
                 if (response.isEmpty()) {
                     System.out.println("Value для отправки пустой.");
-                    h.sendResponseHeaders(400, 0);
+                    h.sendResponseHeaders(HttpStatus.SC_BAD_REQUEST, 0);
                     return;
                 }
-                h.sendResponseHeaders(200, 0);
+                h.sendResponseHeaders(HttpStatus.SC_OK, 0);
 
                 try (OutputStream os = h.getResponseBody()) {
                     os.write(response.getBytes());
@@ -55,21 +55,21 @@ public class TaskHttpServer {
                 String key = h.getRequestURI().getPath().substring("/save/".length());
                 if (key.isEmpty()) {
                     System.out.println("Key для сохранения пустой. key указывается в пути: /save/{key}");
-                    h.sendResponseHeaders(400, 0);
+                    h.sendResponseHeaders(HttpStatus.SC_BAD_REQUEST, 0);
                     return;
                 }
                 String value = readText(h);
                 if (value.isEmpty()) {
                     System.out.println("Value для сохранения пустой. value указывается в теле запроса");
-                    h.sendResponseHeaders(400, 0);
+                    h.sendResponseHeaders(HttpStatus.SC_BAD_REQUEST, 0);
                     return;
                 }
                 data.put(key, value);
                 System.out.println("Значение для ключа " + key + " успешно обновлено!");
-                h.sendResponseHeaders(200, 0);
+                h.sendResponseHeaders(HttpStatus.SC_OK, 0);
             } else {
                 System.out.println("/save ждёт POST-запрос, а получил: " + h.getRequestMethod());
-                h.sendResponseHeaders(405, 0);
+                h.sendResponseHeaders(HttpStatus.SC_METHOD_NOT_ALLOWED, 0);
             }
         }
     }
